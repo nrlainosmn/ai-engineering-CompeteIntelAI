@@ -1,33 +1,33 @@
-# CompeteIntel MY — F&B Market Intelligence & Pricing Assistant
-> A document-grounded and time-series AI assistant that analyzes Malaysian F&B competitor menus, delivery platform pricing, and OpenDOSM consumer price indices to generate audit-ready competitive positioning matrices and price forecasts for local business clients.
+# MarketLens MY
+> An AI market research assistant that helps Malaysian F&B entrepreneurs and SME owners compare published market indicators and prepare briefs with charts and source citations.
 
 ## Problem Statement
-Malaysian cafe operators and F&B business owners spend significant manual effort tracking rapidly changing competitor menu prices and raw ingredient cost spikes. Traditional manual spreadsheet tracking fails to scale across regional markets, while static web scrapers break under layout updates. CompeteIntel MY leverages Retrieval-Augmented Generation (RAG) paired with numerical forecasting over government datasets (OpenDOSM, KPDN PriceCatcher) to deliver citation-backed competitive pricing insights and inflation-adjusted menu recommendations.
+Malaysian F&B entrepreneurs need information about consumer spending, the business landscape and price changes when researching a market. This information is spread across reports with different definitions and reference periods, making comparisons difficult. MarketLens MY will use AI to retrieve and synthesise relevant evidence, supported by checked calculations, to produce clear market briefs initially focused on Johor and Selangor.
 
 ## Evidence of the Problem
-- Local F&B managers report spending 10–15 hours weekly manually monitoring competitor delivery platform tiers and ingredient cost changes across fragmented channels (Source: Malaysian Retailer & F&B Association Report, 2024).
-- Competitor menu items, promotional tiers, and add-on surcharges are published in unstructured digital menus and delivery web pages, making standardized price normalization difficult without automated textual parsing (Source: Gartner Insights, "Automating Market Intelligence Pipelines," 2025).
+- DOSM publishes consumer expenditure and F&B business statistics in separate reports with different reference periods: the Household Expenditure Survey covers 2024, while the Economic Census 2023 F&B release reports on 2022. This shows the need to combine sources carefully when preparing market assessments. Sources: DOSM Household Expenditure Survey Report 2024 and DOSM Economic Census 2023 F&B release.
+- Chen et al. (2021) found that the models evaluated in FinQA struggled with complex numerical reasoning over financial documents. Although the dataset differs from Malaysian market reports, it supports explicitly checking calculations in an AI analysis system. Source: FinQA: A Dataset of Numerical Reasoning over Financial Data.
 
 ## Initial Related Work / Existing Approaches
-- **Manual Spreadsheet Tracking:** High domain accuracy but extremely time-consuming, highly manual, and fails to track regional price updates dynamically.
-- **Static Web Scraping Scripts:** Fast for standard HTML tables but brittle; fails when delivery platform page structures or PDF menu layouts change.
-- **General-Purpose AI Assistants:** Flexible conversational text generation but prone to severe hallucination regarding local Malaysian Ringgit (MYR) pricing, regional store tiers, and SST tax impacts.
+- **Retrieval-Augmented Generation** — Lewis et al. (2020): Combines retrieved evidence with language generation. Its reported tasks do not establish accurate Malaysian market comparisons or calculations. Source: Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.
+- **FinQA** — Chen et al. (2021): Provides a dataset for evaluating numerical reasoning over financial reports. Its financial-report questions do not directly evaluate Malaysian F&B indicators or market briefs. Source: FinQA: A Dataset of Numerical Reasoning over Financial Data.
+- **TableRAG** — Yu, Jian and Chen (2025): Supports reasoning across documents containing text and tables. Its general benchmarks do not establish correct interpretation of this project's indicator definitions, periods and geographic coverage. Source: TableRAG: A Retrieval Augmented Generation Framework for Heterogeneous Document Reasoning.
 
 ## Engineering Gap / Limitation
 Current market intelligence tools lack a hybrid pipeline capable of combining unstructured multi-competitor menu parsing with structured local time-series data (OpenDOSM) into verified, citation-backed feature and pricing matrices.
 
 ## Project Objectives
-- **O1:** To design a hybrid RAG framework capable of parsing unstructured local F&B competitor menus (PDFs/web pages) alongside structured government price indices (OpenDOSM/KPDN PriceCatcher).
-- **O2:** To develop an aspect-based menu item resolution and price trend forecasting pipeline with citation verification guardrails.
-- **O3:** To evaluate the system on menu item normalization accuracy, price forecasting precision, query latency, and response groundedness.
+- **O1**: To design a document-grounded market research assistant that preserves indicator definitions, units, reference periods, geography and sources.
+- **O2**: To develop evidence retrieval, supported indicator comparisons, checked calculations, charts and cited market briefs for the selected Malaysian F&B reports.
+- **O3**: To evaluate factual and numerical accuracy, citation support, handling of insufficient evidence, response time and the usefulness of generated briefs.
 
 ## Target Users
-Cafe Owners, F&B Franchise Operators, Restaurant Managers, and Enterprise Caterers in Malaysia.
+Malaysian F&B SME owners, prospective entrepreneurs and junior business analysts conducting initial market research, particularly comparisons between Johor and Selangor.
 
 ## Data Sources
-- **Source 1:** OpenDOSM Open Data & PriceCatcher Datasets — URL: https://open.dosm.gov.my/data-catalogue
-- **Source 2:** KPDN Open Data & Consumer Price Datasets — URL: https://www.kpdn.gov.my/
-- **Source 3:** Public Competitor Digital Menus & Price Guides (e.g., ZUS Coffee, Gigi Coffee, Bask Bear)
+- **Source 1**: DOSM Household Expenditure Survey Report 2024 — PDF.
+- **Source 2**: DOSM Economic Census 2023: Food and Beverage Services Sector, official release (reference year 2022) — PDF.
+- **Source 3**: DOSM Analysis of Annual Consumer Price Index Malaysia 2024 — PDF.
 
 ## Weekly Progress
 | Week | Focus | Deliverable | Status |
