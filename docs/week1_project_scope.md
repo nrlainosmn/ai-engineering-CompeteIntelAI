@@ -1,54 +1,13 @@
-# Project Scoping Document — CompeteIntel MY
+| **Project Name** | **MarketLens MY** — AI Market Research Assistant for the Malaysian F&B Sector |
+| **Domain** | Business intelligence and market analysis for Malaysian food and beverage (F&B) small and medium enterprises. |
+| **Problem Statement** | An entrepreneur comparing Johor and Selangor must consult several reports to understand household spending, the number of F&B establishments and changes in consumer prices. The reports use different categories and reference years, which can make comparisons misleading. MarketLens MY will retrieve relevant passages and tables, check calculations in code and produce a short market brief with charts and citations. |
+| **Evidence of the Problem** | **Evidence 1:** DOSM reports household expenditure by state for 2024, while its Economic Census 2023 reports F&B establishment counts for 2022. A brief using both sources needs to show which year and measure each figure represents.<br>**Source / citation:** DOSM, [Household Expenditure Survey Report 2024](https://www.dosm.gov.my/portal-main/release-content/household-expenditure-survey-report--malaysia--states) and [Economic Census 2023 F&B release](https://www.dosm.gov.my/site/downloadrelease?id=economic-census-2023-food-and-beverage-services-sector&lang=English).<br><br>**Evidence 2:** The models tested in FinQA struggled with multi-step calculations over financial reports. That finding gives this project a reason to check each calculated difference against a manually verified answer.<br>**Source / citation:** Chen et al. (2021), [FinQA](https://arxiv.org/abs/2109.00122). |
+| **Initial Related Work (at least 3)** | **Study / solution 1:** Retrieval-Augmented Generation retrieves relevant passages to support generated answers.<br>**Source / citation:** Lewis et al. (2020), [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/abs/2005.11401).<br>**Key limitation:** Retrieving a relevant passage still leaves the unit, geography and year of a numerical comparison to be checked.<br><br>**Study / solution 2:** FinQA pairs questions about financial reports with reference calculations.<br>**Source / citation:** Chen et al. (2021), [FinQA: A Dataset of Numerical Reasoning over Financial Data](https://arxiv.org/abs/2109.00122).<br>**Key limitation:** Its benchmark covers financial reports. Malaysian state-level market comparisons require a local set of test questions and reference answers.<br><br>**Study / solution 3:** TableRAG combines text retrieval with operations on tables to answer questions across a document.<br>**Source / citation:** Yu, Jian and Chen (2025), [TableRAG: A Retrieval Augmented Generation Framework for Heterogeneous Document Reasoning](https://arxiv.org/abs/2506.10380).<br>**Key limitation:** Its benchmarks leave open whether the generated comparisons preserve DOSM indicator definitions and are useful to F&B entrepreneurs. |
+| **Engineering Gap / Limitation** | **Gap / Limitation:** A market brief needs to connect figures across DOSM reports while keeping each figure tied to its definition, unit, year, location and source table. The engineering challenge is to calculate differences only for comparable indicators and explain where the available data cannot answer the business question. |
+| **Initial Project Objectives (2–3)** | **O1:** To design a way to record each indicator with its definition, unit, reference period, geography and source location.<br><br>**O2:** To develop an assistant that retrieves evidence from three DOSM reports, calculates comparable indicators and produces cited briefs and charts for Johor and Selangor.<br><br>**O3:** To evaluate factual and numerical accuracy, citation support, responses to insufficient evidence and response time using a fixed test set, and assess brief usefulness with a rubric. |
+| **Target Users** | Malaysian F&B SME owners, prospective entrepreneurs and junior business analysts preparing an initial market assessment of Johor and Selangor. |
+| **Data Sources (at least 2)** | **Source 1:** DOSM, *Household Expenditure Survey Report 2024 (Malaysia & States)* — household spending patterns and state comparisons. [PDF](https://storage.dosm.gov.my/hies/household_expenditure_2024.pdf)<br><br>**Source 2:** DOSM, *Economic Census 2023: Food and Beverage Services Sector* — establishment counts for reference year 2022. [Official release PDF](https://www.dosm.gov.my/site/downloadrelease?id=economic-census-2023-food-and-beverage-services-sector&lang=English)<br><br>**Source 3:** DOSM, *Analysis of Annual Consumer Price Index Malaysia 2024* — price changes for the categories and geographic coverage identified in the report. [PDF](https://storage.dosm.gov.my/cpi/cpi_annual_2024.pdf) |
+| **Similar to EduAdvisor** | Both assistants retrieve evidence from a selected collection of official documents and cite the source so users can check an answer. |
+| **Different from EduAdvisor** | EduAdvisor answers academic advising questions from university documents. MarketLens MY combines economic reports, compares market indicators and presents the findings in a brief with calculations and charts. |
+| **Responsible AI Risks (at least 2)** | **Risk 1:** An invented figure or an incorrect growth rate could mislead an entrepreneur. Cite each figure, verify the arithmetic and flag missing evidence.<br><br>**Risk 2:** Combining different years or categories can distort a comparison. Display the reference year, units and category alongside each value, and check that they match before calculating a difference.<br><br>**Risk 3:** Users could interpret state averages as a prediction of sales at a particular outlet. Label the geographic coverage, distinguish interpretation from reported findings and state what local evidence the user would need. |
 
-## Project Name
-CompeteIntel MY — F&B Market Intelligence & Competitor Pricing Assistant (Malaysia)
-
-## Domain
-F&B Market Intelligence & Competitive Pricing Strategy
-
-## Problem Statement
-Malaysian cafe operators, caterers, and F&B business managers manually spend hours aggregating scattered competitor menu prices, add-on surcharges, and raw material inflation figures across delivery apps, digital menus, and government reports. Traditional web searches return unorganized text without standardized item alignment, while basic scrapers break when page layouts change. AI engineering enables dynamic document parsing, entity resolution across differently named items, and grounded competitive price-gap reporting.
-
-## Evidence of the Problem
-- **Evidence 1:** Local F&B managers report spending up to 10–15 hours weekly aggregating competitive menu intelligence and tracking ingredient price shifts manually across fragmented channels.  
-  *Source / Citation:* Malaysian Retailer & F&B Association Report, 2024.
-- **Evidence 2:** Competitor menu items, promotional tiers, and add-on surcharges are trapped in unstructured digital menus and delivery landing pages, making standardized price matrix alignment difficult without multi-source textual and visual parsing.  
-  *Source / Citation:* Gartner Insights, "Automating Market Intelligence Pipelines," 2025.
-
-## Initial Related Work
-- **Study / Solution 1:** Manual Spreadsheet Tracking  
-  *Source / Citation:* Standard Industry Practice  
-  *Key Limitation:* Extremely time-consuming, highly manual, and fails to track regional price changes across Klang Valley outlets dynamically.
-- **Study / Solution 2:** Static Web Scraping Scripts (e.g., BeautifulSoup / Regex)  
-  *Source / Citation:* Traditional Data Engineering Pipelines  
-  *Key Limitation:* Rigid and brittle; fails completely when delivery platform schemas, CSS selectors, or digital menu PDF page layouts change.
-- **Study / Solution 3:** General-Purpose AI Assistants (e.g., standard ChatGPT)  
-  *Source / Citation:* OpenAI Platform  
-  *Key Limitation:* Lacks grounding in local Malaysian F&B market context, leading to severe hallucination of non-existent prices, outdated SST assumptions, or incorrect item sizing.
-
-## Engineering Gap / Limitation
-Existing market intelligence tools either rely on brittle manual scrapers or produce hallucinated summaries with general-purpose LLMs without verifiable grounding in official Malaysian government datasets (OpenDOSM/KPDN) or structured cross-competitor item normalization.
-
-## Initial Project Objectives
-- **O1:** To design a hybrid RAG framework capable of ingesting unstructured competitor menu PDFs and web pages alongside structured consumer price index datasets (OpenDOSM / KPDN PriceCatcher).
-- **O2:** To develop an aspect-based menu item resolution and price trend forecasting pipeline with retrieval verification and safety guardrails to prevent hallucinated market claims.
-- **O3:** To evaluate the solution in terms of menu normalization accuracy, price forecasting precision, query latency, and response groundedness.
-
-## Target Users
-Cafe Owners, F&B Franchise Operators, Restaurant Managers, and Strategic Growth Leads in the Malaysian food service sector.
-
-## Data Sources
-- **Source 1:** OpenDOSM Data Catalogue (Consumer Price Index & PriceCatcher) — URL: https://open.dosm.gov.my/data-catalogue
-- **Source 2:** KPDN Open Data Portal — URL: https://www.kpdn.gov.my/
-- **Source 3:** Public Competitor Digital Menus & Delivery Platform Listings (e.g., ZUS Coffee, Gigi Coffee, Bask Bear)
-
-## Similar to EduAdvisor
-Like EduAdvisor, this project uses a Retrieval-Augmented Generation (RAG) pipeline over official unstructured PDF and tabular documents to eliminate model hallucinations and deliver grounded responses with clear source citations.
-
-## Different from EduAdvisor
-While EduAdvisor focuses on single-institution Q&A for academic advising, CompeteIntel MY performs multi-competitor menu normalization, regional Ringgit (MYR) price-gap matrix extraction, and numerical price trend forecasting using local Malaysian open data APIs.
-
-## Responsible AI Risks
-- **Risk 1 — Hallucination:** The model invents non-existent competitor menu items or incorrect pricing tiers $\rightarrow$ cafe owners set uncompetitive menu prices that hurt margins.
-- **Risk 2 — Regional Bias:** The system over-indexes on high-density Klang Valley outlet prices while ignoring suburban/rural market tiers $\rightarrow$ producing skewed pricing metrics for out-of-city business clients.
-- **Risk 3 — Outdated Context:** System compares historical menu PDFs with newly updated competitor promotional tiers $\rightarrow$ outputting inaccurate competitive gap conclusions.
